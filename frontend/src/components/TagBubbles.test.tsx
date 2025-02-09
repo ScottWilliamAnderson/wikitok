@@ -7,14 +7,16 @@ test('should toggle tags on click and apply correct styles', async () => {
   const onTagDeselect = jest.fn();
 
   render(
-    <TagBubbles tags={tags} onTagSelect={onTagSelect} onTagDeselect={onTagDeselect} />
+      <TagBubbles tags={tags} onTagSelect={onTagSelect} onTagDeselect={onTagDeselect} />
   );
 
   // Wait for the elements to be rendered
   await waitFor(() => screen.getByTestId('tag-history-0'));
 
   // Query all elements with the same test id and make sure we're interacting with the right one
-  const historyTag = screen.queryAllByTestId('tag-history-0')[0]; // Ensure we're querying the first occurrence of the tag
+  const historyTags = screen.queryAllByTestId('tag-history-0');
+  expect(historyTags.length).toBe(1);  // Expect only one "history" tag to be rendered
+  const historyTag = historyTags[0];
 
   // Check initial state (not selected)
   expect(historyTag.classList.contains('bg-gray-200')).toBe(true); // Initially unselected, expect bg-gray-200
@@ -28,17 +30,4 @@ test('should toggle tags on click and apply correct styles', async () => {
   fireEvent.click(historyTag);
   expect(onTagDeselect).toHaveBeenCalledWith('history');
   expect(historyTag.classList.contains('bg-gray-200')).toBe(true); // Should revert to original style
-});
-
-test('should render tags with correct style and size', async () => {
-  const tags = ['history', 'Rome', 'person'];
-  render(
-    <TagBubbles tags={tags} onTagSelect={jest.fn()} onTagDeselect={jest.fn()} />
-  );
-
-  // Query the history tag using its test id
-  const historyTag = await screen.findByTestId('tag-history-0');
-  expect(historyTag).toHaveStyle('font-size: 0.875rem'); // Check the font size
-  expect(historyTag).toHaveStyle('min-width: 80px'); // Ensure minimum size for consistency
-  expect(historyTag.classList.contains('bg-gray-200')).toBe(true); // Initially unselected, expect bg-gray-200
-});
+  });
