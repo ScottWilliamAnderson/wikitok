@@ -9,3 +9,6 @@ const windowInstance = new Window();
 globalThis.window = windowInstance;
 globalThis.document = windowInstance.document;
 globalThis.navigator = windowInstance.navigator;
+
+// explicitly assign localStorage from the simulated window
+globalThis.localStorage = windowInstance.localStorage;
