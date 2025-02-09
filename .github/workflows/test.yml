@@ -2,9 +2,11 @@ name: Run Bun Tests
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - '*'  # This will run the workflow on any branch
   pull_request:
-    branches: [ main ]
+    branches:
+      - '*'  # This will also run the workflow for PRs from any branch
 
 jobs:
   test:
@@ -12,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: frontend
+        working-directory: frontend  # Ensure we run inside the frontend directory
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
