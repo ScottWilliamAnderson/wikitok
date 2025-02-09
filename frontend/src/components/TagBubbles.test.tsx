@@ -1,17 +1,21 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { TagBubbles } from './TagBubbles';
 
-test('should toggle tags on click and apply correct styles', () => {
+test('should toggle tags on click and apply correct styles', async () => {
   const tags = ['history', 'Rome', 'person'];
   const onTagSelect = jest.fn();
   const onTagDeselect = jest.fn();
 
-  const { getByText } = render(
+  render(
     <TagBubbles tags={tags} onTagSelect={onTagSelect} onTagDeselect={onTagDeselect} />
   );
 
-  // Initial state (not selected)
-  const historyTag = getByText('history');
+  // Wait for the elements to be rendered
+  await waitFor(() => screen.getByText('history'));
+
+  const historyTag = screen.getByText('history');
+
+  // Check initial state (not selected)
   expect(historyTag.classList.contains('bg-gray-700')).toBe(true); // Check the initial non-selected style
 
   // Click to select
@@ -25,13 +29,13 @@ test('should toggle tags on click and apply correct styles', () => {
   expect(historyTag.classList.contains('bg-gray-700')).toBe(true); // Check deselected style
 });
 
-test('should render tags with correct style and size', () => {
+test('should render tags with correct style and size', async () => {
   const tags = ['history', 'Rome', 'person'];
-  const { getByText } = render(
+  render(
     <TagBubbles tags={tags} onTagSelect={jest.fn()} onTagDeselect={jest.fn()} />
   );
 
-  const historyTag = getByText('history');
+  const historyTag = await screen.findByText('history');
   expect(historyTag).toHaveStyle('font-size: 0.875rem'); // Check the font size
   expect(historyTag).toHaveStyle('min-width: 80px'); // Ensure minimum size for consistency
   expect(historyTag.classList.contains('bg-gray-700')).toBe(true); // Check initial non-selected style
