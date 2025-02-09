@@ -1,6 +1,6 @@
 // frontend/src/hooks/useWikiArticles.test.ts
 import { test, expect, jest } from "bun:test";
-import { act } from "react-dom/test-utils";
+import { act } from "react";  // updated import to use React 18 API
 import { renderHook } from "@testing-library/react-hooks";
 import { useWikiArticles } from "./useWikiArticles";
 
