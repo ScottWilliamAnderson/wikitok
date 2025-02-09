@@ -1,7 +1,11 @@
 // frontend/test-setup.ts
 
-// Import the helper to install DOM globals from happy-dom
-import { installGlobals } from "happy-dom";
+import { Window } from "happy-dom";
 
-// Install window, document, and other browser globals into the Bun runtime
-installGlobals();
+// create a new instance of Window from Happy DOM
+const windowInstance = new Window();
+
+// assign the global browser objects to the Happy DOM instance
+globalThis.window = windowInstance;
+globalThis.document = windowInstance.document;
+globalThis.navigator = windowInstance.navigator;
