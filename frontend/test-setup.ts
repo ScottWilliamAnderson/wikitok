@@ -1,5 +1,8 @@
 // frontend/test-setup.ts
 
+// Inform React that we are in a test environment that supports act.
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+
 import { Window } from "happy-dom";
 
 // create a new instance of Window from Happy DOM
@@ -10,5 +13,5 @@ globalThis.window = windowInstance;
 globalThis.document = windowInstance.document;
 globalThis.navigator = windowInstance.navigator;
 
-// explicitly assign localStorage from the simulated window
+// explicitly assign localStorage (and any other globals you might need)
 globalThis.localStorage = windowInstance.localStorage;
