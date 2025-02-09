@@ -29,8 +29,13 @@ test("integration: useWikiArticles fetches real Wikipedia articles", async () =>
   // Verify that we have fetched at least one article.
   expect(result.current.articles.length).toBeGreaterThan(0);
 
-  // Optionally, verify that the first article has the expected properties.
+  // Log the real article details for visibility
   const article = result.current.articles[0];
+  console.log(`Fetched real article: ${article.title}`);
+  console.log(`Article URL: ${article.url}`);
+  console.log(`Article Extract: ${article.extract}`);
+
+  // Optionally, verify that the first article has the expected properties.
   expect(article.title).toBeTruthy();
   expect(article.extract).toBeTruthy();
 });
