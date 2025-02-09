@@ -13,8 +13,8 @@ test('should toggle tags on click and apply correct styles', async () => {
   // Wait for the elements to be rendered
   await waitFor(() => screen.getByText('history'));
 
-  // Query all buttons with the text "history"
-  const historyTag = screen.getAllByText('history')[0]; // Ensure we pick the first matching element
+  // Query all buttons with the text "history" and select the first one
+  const historyTag = screen.getAllByText('history')[0]; // Target the first element
 
   // Check initial state (not selected)
   expect(historyTag.classList.contains('bg-gray-200')).toBe(true); // Initially unselected, expect bg-gray-200
