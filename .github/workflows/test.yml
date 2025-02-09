@@ -15,7 +15,7 @@ jobs:
     defaults:
       run:
         working-directory: frontend  # Ensure we run inside the frontend directory
-      env:
+    env:
         RUN_INTEGRATION_TESTS: "true"  # Remove or set to false if you prefer not to run integration tests by default.
     steps:
       - name: Checkout code
