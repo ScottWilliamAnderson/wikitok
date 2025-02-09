@@ -11,10 +11,10 @@ test('should toggle tags on click and apply correct styles', async () => {
   );
 
   // Wait for the elements to be rendered
-  await waitFor(() => screen.getByTestId('tag-history')); // Wait for history tag
+  await waitFor(() => screen.getByTestId('tag-history-0')); // Wait for the first tag (index 0)
 
   // Query the history tag using its test id
-  const historyTag = screen.getByTestId('tag-history');
+  const historyTag = screen.getByTestId('tag-history-0');
 
   // Check initial state (not selected)
   expect(historyTag.classList.contains('bg-gray-200')).toBe(true); // Initially unselected, expect bg-gray-200
@@ -37,7 +37,7 @@ test('should render tags with correct style and size', async () => {
   );
 
   // Query the history tag using its test id
-  const historyTag = await screen.findByTestId('tag-history');
+  const historyTag = await screen.findByTestId('tag-history-0');
   expect(historyTag).toHaveStyle('font-size: 0.875rem'); // Check the font size
   expect(historyTag).toHaveStyle('min-width: 80px'); // Ensure minimum size for consistency
   expect(historyTag.classList.contains('bg-gray-200')).toBe(true); // Initially unselected, expect bg-gray-200
