@@ -14,7 +14,7 @@ test('should toggle tags on click and apply correct styles', async () => {
   await waitFor(() => screen.getByText('history'));
 
   // Query all buttons with the text "history" and select the first one
-  const historyTag = screen.getAllByText('history')[0]; // Target the first element
+  const historyTag = screen.getAllByText('history')[0]; // Target the first element only
 
   // Check initial state (not selected)
   expect(historyTag.classList.contains('bg-gray-200')).toBe(true); // Initially unselected, expect bg-gray-200
@@ -36,6 +36,7 @@ test('should render tags with correct style and size', async () => {
     <TagBubbles tags={tags} onTagSelect={jest.fn()} onTagDeselect={jest.fn()} />
   );
 
+  // Ensure we are checking the first "history" tag
   const historyTag = await screen.findByText('history');
   expect(historyTag).toHaveStyle('font-size: 0.875rem'); // Check the font size
   expect(historyTag).toHaveStyle('min-width: 80px'); // Ensure minimum size for consistency
