@@ -1,35 +1,14 @@
-import { test, expect, vi } from 'bun:test';
+import { test, expect } from 'bun:test';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useWikiArticles } from './useWikiArticles';
 
-const mockData = {
-  query: {
-    pages: {
-      1: {
-        title: 'Article 1',
-        extract: 'Summary of Article 1',
-        pageid: 1,
-        canonicalurl: 'http://example.com/1',
-        categories: [{ title: 'History' }],
-      },
-      2: {
-        title: 'Article 2',
-        extract: 'Summary of Article 2',
-        pageid: 2,
-        canonicalurl: 'http://example.com/2',
-        categories: [{ title: 'Science' }],
-      },
-    },
-  },
-};
+test('integration: useWikiArticles fetches real Wikipedia articles', async () => {
+  // Ensure the integration test runs only if the environment variable is set.
+  if (!process.env.RUN_INTEGRATION_TESTS) {
+    console.log('Skipping integration test: RUN_INTEGRATION_TESTS not set.');
+    return;
+  }
 
-global.fetch = vi.fn(() =>
-  Promise.resolve({
-    json: () => Promise.resolve(mockData),
-  }) as any
-);
-
-test('useWikiArticles fetches and processes articles with tags', async () => {
   const { result, waitForNextUpdate } = renderHook(() => useWikiArticles());
 
   // Trigger fetching of articles
@@ -42,6 +21,14 @@ test('useWikiArticles fetches and processes articles with tags', async () => {
 
   // Verify articles were fetched correctly
   expect(result.current.articles.length).toBeGreaterThan(0);
-  expect(result.current.articles[0].tags).toContain('History');
-  expect(result.current.articles[1].tags).toContain('Science');
+
+  // Optionally log the first article for visibility
+  const firstArticle = result.current.articles[0];
+  console.log(`Fetched real article: ${firstArticle.title}`);
+  console.log(`Article URL: ${firstArticle.url}`);
+  console.log(`Article Extract: ${firstArticle.extract}`);
+
+  // Optionally, verify that the first article has the expected properties.
+  expect(firstArticle.title).toBeTruthy();
+  expect(firstArticle.extract).toBeTruthy();
 });
