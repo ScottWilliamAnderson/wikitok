@@ -28,9 +28,9 @@ export function useWikiArticles() {
             format: "json",
             generator: "random",
             grnnamespace: "0",
-            prop: "extracts|pageimages|info",
+            prop: "extracts|pageimages|info|categories",
             inprop: "url",
-            grnlimit: "20",
+            grnlimit: "500",
             exintro: "1",
             exlimit: "max",
             exsentences: "5",
@@ -49,6 +49,7 @@ export function useWikiArticles() {
           pageid: page.pageid,
           thumbnail: page.thumbnail,
           url: page.canonicalurl,
+          tags: page.categories ? page.categories.map((cat: any) => cat.title) : [],
         }))
         .filter((article) => article.thumbnail
                              && article.thumbnail.source

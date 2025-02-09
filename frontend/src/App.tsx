@@ -13,6 +13,7 @@ function App() {
   const { likedArticles, toggleLike } = useLikedArticles()
   const observerTarget = useRef(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -64,6 +65,19 @@ function App() {
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
   };
+
+  const handleTagSelect = (tag: string) => {
+    setSelectedTags([...selectedTags, tag]);
+  };
+
+  const handleTagDeselect = (tag: string) => {
+    setSelectedTags(selectedTags.filter(t => t !== tag));
+  };
+
+  const filteredArticles = articles.filter(article => {
+    if (selectedTags.length === 0) return true;
+    return article.tags?.some(tag => selectedTags.includes(tag));
+  });
 
   return (
     <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
@@ -213,7 +227,7 @@ function App() {
         </div>
       )}
 
-      {articles.map((article) => (
+      {filteredArticles.map((article) => (
         <WikiCard key={article.pageid} article={article} />
       ))}
       <div ref={observerTarget} className="h-10 -mt-1" />

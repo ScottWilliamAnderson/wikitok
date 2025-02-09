@@ -1,6 +1,7 @@
 import { Share2, Heart } from 'lucide-react';
 import { useState } from 'react';
 import { useLikedArticles } from '../contexts/LikedArticlesContext';
+import { TagBubbles } from './TagBubbles';
 
 export interface WikiArticle {
     title: string;
@@ -12,6 +13,7 @@ export interface WikiArticle {
         width: number;
         height: number;
     };
+    tags?: string[];
 }
 
 interface WikiCardProps {
@@ -44,6 +46,16 @@ export function WikiCard({ article }: WikiCardProps) {
             await navigator.clipboard.writeText(article.url);
             alert('Link copied to clipboard!');
         }
+    };
+
+    const handleTagSelect = (tag: string) => {
+        console.log(`Tag selected: ${tag}`);
+        // Implement tag selection logic here
+    };
+
+    const handleTagDeselect = (tag: string) => {
+        console.log(`Tag deselected: ${tag}`);
+        // Implement tag deselection logic here
     };
 
     return (
@@ -113,6 +125,13 @@ export function WikiCard({ article }: WikiCardProps) {
                     >
                         Read more →
                     </a>
+                    {article.tags && (
+                        <TagBubbles
+                            tags={article.tags}
+                            onTagSelect={handleTagSelect}
+                            onTagDeselect={handleTagDeselect}
+                        />
+                    )}
                 </div>
             </div>
         </div>
