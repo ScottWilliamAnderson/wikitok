@@ -1,41 +1,46 @@
-// frontend/src/hooks/useWikiArticles.integration.test.ts
-import { test, expect } from "bun:test";
-import { renderHook } from "@testing-library/react-hooks";
-import { useWikiArticles } from "./useWikiArticles";
+import { test, expect, vi } from 'bun:test';
+import { renderHook, act } from '@testing-library/react-hooks';
+import { useWikiArticles } from './useWikiArticles';
 
-/**
- * Integration test for useWikiArticles that uses real Wikipedia data.
- *
- * To run this test, set the environment variable RUN_INTEGRATION_TESTS=true.
- * Example:
- *   RUN_INTEGRATION_TESTS=true bun test --preload ./frontend/test-setup.ts
- */
-test("integration: useWikiArticles fetches real Wikipedia articles", async () => {
-  // Skip the integration test unless the environment variable is set.
-  if (!process.env.RUN_INTEGRATION_TESTS) {
-    console.log("Skipping integration test: RUN_INTEGRATION_TESTS not set.");
-    return;
-  }
+// Mock the fetch function for this test
+global.fetch = vi.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve({
+      query: {
+        pages: {
+          1: {
+            title: 'Article 1',
+            extract: 'Summary of Article 1',
+            pageid: 1,
+            canonicalurl: 'http://example.com/1',
+            categories: [{ title: 'History' }],
+          },
+          2: {
+            title: 'Article 2',
+            extract: 'Summary of Article 2',
+            pageid: 2,
+            canonicalurl: 'http://example.com/2',
+            categories: [{ title: 'Science' }],
+          },
+        },
+      },
+    }),
+  }) as any
+);
 
-  // Render the hook (using real network fetch, not a mock)
+test('useWikiArticles fetches and processes articles with tags', async () => {
   const { result, waitForNextUpdate } = renderHook(() => useWikiArticles());
 
-  // Trigger fetching of articles.
-  result.current.fetchArticles();
+  // Trigger fetching of articles
+  act(() => {
+    result.current.fetchArticles();
+  });
 
-  // Wait for the hook to update its state (articles to be added).
+  // Wait for the hook to update with the articles
   await waitForNextUpdate();
 
-  // Verify that we have fetched at least one article.
-  expect(result.current.articles.length).toBeGreaterThan(0);
-
-  // Log the real article details for visibility
-  const article = result.current.articles[0];
-  console.log(`Fetched real article: ${article.title}`);
-  console.log(`Article URL: ${article.url}`);
-  console.log(`Article Extract: ${article.extract}`);
-
-  // Optionally, verify that the first article has the expected properties.
-  expect(article.title).toBeTruthy();
-  expect(article.extract).toBeTruthy();
+  // Verify articles were fetched correctly
+  expect(result.current.articles).toHaveLength(2);
+  expect(result.current.articles[0].tags).toContain('History');
+  expect(result.current.articles[1].tags).toContain('Science');
 });
