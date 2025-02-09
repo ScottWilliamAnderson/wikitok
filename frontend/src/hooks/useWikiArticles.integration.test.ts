@@ -16,8 +16,13 @@ test('integration: useWikiArticles fetches real Wikipedia articles', async () =>
     result.current.fetchArticles();
   });
 
-  // Wait for the hook to update with the articles
-  await waitForNextUpdate();
+  // Wait for the hook to update with the articles (increase timeout)
+  try {
+    await waitForNextUpdate({ timeout: 5000 }); // Increase timeout
+  } catch (e) {
+    console.error('Error waiting for update:', e);
+    throw e;
+  }
 
   // Verify articles were fetched correctly
   expect(result.current.articles.length).toBeGreaterThan(0);
