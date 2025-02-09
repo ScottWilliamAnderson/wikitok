@@ -24,6 +24,7 @@ export const TagBubbles: React.FC<TagBubblesProps> = ({ tags, onTagSelect, onTag
       {tags.map(tag => (
         <button
           key={tag}
+          data-testid={`tag-${tag}`} // Add unique data-testid based on tag name
           onClick={() => handleTagClick(tag)}
           className={`px-3 py-1 rounded-full border ${selectedTags.includes(tag) ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
         >
