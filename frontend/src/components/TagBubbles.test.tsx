@@ -11,10 +11,10 @@ test('should toggle tags on click and apply correct styles', async () => {
   );
 
   // Wait for the elements to be rendered
-  await waitFor(() => screen.getByTestId('tag-history-0')); // Wait for the first tag (index 0)
+  await waitFor(() => screen.getByTestId('tag-history-0'));
 
-  // Query the history tag using its test id
-  const historyTag = screen.getByTestId('tag-history-0');
+  // Query all elements with the same test id and make sure we're interacting with the right one
+  const historyTag = screen.queryAllByTestId('tag-history-0')[0]; // Ensure we're querying the first occurrence of the tag
 
   // Check initial state (not selected)
   expect(historyTag.classList.contains('bg-gray-200')).toBe(true); // Initially unselected, expect bg-gray-200
