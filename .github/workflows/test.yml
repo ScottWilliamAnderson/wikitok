@@ -1,4 +1,3 @@
-# .github/workflows/test.yml
 name: Run Bun Tests
 
 on:
@@ -11,8 +10,9 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
-    env:
-      RUN_INTEGRATION_TESTS: "true"  # Remove or set to false if you prefer not to run integration tests by default.
+    defaults:
+      run:
+        working-directory: frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,4 +24,4 @@ jobs:
         run: bun install
 
       - name: Run tests with DOM globals and React 18 support
-        run: bun test --preload ./frontend/test-setup.ts
+        run: bun test --preload ./test-setup.ts
