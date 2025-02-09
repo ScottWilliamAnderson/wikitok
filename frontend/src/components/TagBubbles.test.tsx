@@ -12,17 +12,17 @@ test('should toggle tags on click and apply correct styles', () => {
 
   // Initial state (not selected)
   const historyTag = getByText('history');
-  expect(historyTag).toHaveClass('bg-gray-700');
+  expect(historyTag.classList.contains('bg-gray-700')).toBe(true); // Check the initial non-selected style
 
   // Click to select
   fireEvent.click(historyTag);
   expect(onTagSelect).toHaveBeenCalledWith('history');
-  expect(historyTag).toHaveClass('bg-blue-500');
+  expect(historyTag.classList.contains('bg-blue-500')).toBe(true); // Check selected style
 
   // Click again to deselect
   fireEvent.click(historyTag);
   expect(onTagDeselect).toHaveBeenCalledWith('history');
-  expect(historyTag).toHaveClass('bg-gray-700');
+  expect(historyTag.classList.contains('bg-gray-700')).toBe(true); // Check deselected style
 });
 
 test('should render tags with correct style and size', () => {
@@ -34,5 +34,5 @@ test('should render tags with correct style and size', () => {
   const historyTag = getByText('history');
   expect(historyTag).toHaveStyle('font-size: 0.875rem'); // Check the font size
   expect(historyTag).toHaveStyle('min-width: 80px'); // Ensure minimum size for consistency
-  expect(historyTag).toHaveClass('bg-gray-700'); // Check initial non-selected style
+  expect(historyTag.classList.contains('bg-gray-700')).toBe(true); // Check initial non-selected style
 });
